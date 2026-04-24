@@ -137,11 +137,6 @@
           "title": "Source files",
           "description": "Source files to download for this component"
         },
-        "default-package-config": {
-          "$ref": "#/$defs/PackageConfig",
-          "title": "Default package config",
-          "description": "Default configuration applied to all binary packages produced by this component"
-        },
         "packages": {
           "additionalProperties": {
             "$ref": "#/$defs/PackageConfig"
@@ -149,6 +144,11 @@
           "type": "object",
           "title": "Package overrides",
           "description": "Per-package configuration overrides keyed by exact binary package name"
+        },
+        "publish": {
+          "$ref": "#/$defs/ComponentPublishConfig",
+          "title": "Publish settings",
+          "description": "Component-level publish channel settings"
         }
       },
       "additionalProperties": false,
@@ -285,6 +285,27 @@
         "type"
       ]
     },
+    "ComponentPublishConfig": {
+      "properties": {
+        "rpm-channel": {
+          "type": "string",
+          "title": "RPM channel",
+          "description": "Publish channel for binary packages produced by this component"
+        },
+        "srpm-channel": {
+          "type": "string",
+          "title": "SRPM channel",
+          "description": "Publish channel for the SRPM produced by this component"
+        },
+        "debuginfo-channel": {
+          "type": "string",
+          "title": "Debuginfo channel",
+          "description": "Publish channel for debuginfo packages produced by this component"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "ComponentRenderConfig": {
       "properties": {
         "skip-file-filter": {
@@ -350,6 +371,11 @@
           "$ref": "#/$defs/ToolsConfig",
           "title": "Tools configuration",
           "description": "Configuration for tools used by azldev"
+        },
+        "default-component-config": {
+          "$ref": "#/$defs/ComponentConfig",
+          "title": "Default component config",
+          "description": "Project-wide default applied to all components before group and component overrides"
         },
         "default-package-config": {
           "$ref": "#/$defs/PackageConfig",
@@ -673,10 +699,19 @@
     },
     "PackagePublishConfig": {
       "properties": {
+        "rpm-channel": {
+          "type": "string",
+          "title": "RPM channel",
+          "description": "Publish channel for binary packages; overrides the component-level rpm-channel; use 'none' to keep RPMs in the base directory and skip publishing"
+        },
+        "debuginfo-channel": {
+          "type": "string",
+          "title": "Debuginfo channel",
+          "description": "Publish channel for debuginfo packages; overrides the component-level debuginfo-channel; use 'none' to keep RPMs in the base directory and skip publishing"
+        },
         "channel": {
           "type": "string",
-          "title": "Channel",
-          "description": "Publish channel for this package; use 'none' to signal to downstream tooling that this package should not be published"
+          "description": "Deprecated: use 'rpm-channel' instead. Kept for backwards compatibility; falls back to this value when 'rpm-channel' is not set."
         }
       },
       "additionalProperties": false,
