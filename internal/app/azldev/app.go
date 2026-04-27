@@ -157,6 +157,13 @@ lives), or use -C to point to one.`,
 	app.cmd.SetCompletionCommandGroupID(CommandGroupMeta)
 	app.addAdvancedCommandHint()
 
+	app.registerGlobalFlags()
+
+	return app
+}
+
+// registerGlobalFlags defines all persistent (global) flags for the CLI.
+func (app *App) registerGlobalFlags() {
 	// Define global flags and configuration settings.
 	app.cmd.PersistentFlags().BoolVarP(&app.verbose, "verbose", "v", false, "enable verbose output")
 	app.cmd.PersistentFlags().BoolVarP(&app.quiet, "quiet", "q", false, "only enable minimal output")
@@ -176,8 +183,6 @@ lives), or use -C to point to one.`,
 		"output colorization mode {always, auto, never}")
 	app.cmd.PersistentFlags().BoolVar(&app.permissiveConfigParsing, "permissive-config",
 		false, "do not fail on unknown fields in TOML config files")
-
-	return app
 }
 
 // addAdvancedCommandHint embeds a hint about the hidden "advanced" command group

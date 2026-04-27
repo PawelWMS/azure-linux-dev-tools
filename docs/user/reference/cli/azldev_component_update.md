@@ -15,6 +15,11 @@ reproducible results.
 
 Local components are skipped — they have no upstream commit to resolve.
 
+When updating all components (-a), orphan lock files (locks for components
+that no longer exist in the project config) are automatically pruned.
+Orphan pruning is skipped when updating individual components to avoid
+accidentally removing lock files for components not included in the filter.
+
 ```
 azldev component update [flags]
 ```
@@ -39,6 +44,7 @@ azldev component update [flags]
   -p, --component stringArray         Component name pattern
   -g, --component-group stringArray   Component group name
   -h, --help                          help for update
+      --skip-lock-validation          skip lock file consistency checks (default true)
   -s, --spec-path stringArray         Spec path
 ```
 
